@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'package:black/screens/aboutUs_Screen.dart';
 import 'package:black/screens/business_Screen.dart';
 import 'package:black/screens/chatScreen.dart';
@@ -8,18 +9,37 @@ import 'package:black/screens/our_Articles_Screen.dart';
 import 'package:flutter/material.dart';
 import 'package:animated_notch_bottom_bar/animated_notch_bottom_bar/animated_notch_bottom_bar.dart';
 import '../screens/home_Screen.dart';
-import '../screens/scaffold.dart';
 
-class MyScaffold extends StatelessWidget {
-  final Widget body;
+class Scaffold3 extends StatefulWidget {
+  const Scaffold3({super.key});
 
-  MyScaffold({required this.body});
+  @override
+  State<Scaffold3> createState() => _Scaffold3State();
+}
 
+class _Scaffold3State extends State<Scaffold3> {
   double deviceHeight(BuildContext context) {
     return MediaQuery.of(context).size.height;
   }
+  final _pageController = PageController(initialPage: 0);
+
+  /// Controller to handle bottom nav bar and also handles initial page
+  final _controller = NotchBottomBarController(index: 0);
+
+  int maxCount = 5;
 
   @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
+  /// widget list
+  final List<Widget> bottomBarPages = [
+    HomeScreen(),
+    OurArticlesScreen(),
+    JobsScreen(),
+  ];
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
@@ -413,8 +433,77 @@ class MyScaffold extends StatelessWidget {
             )
         ),
       ),
-      body: body,
+      bottomNavigationBar: (bottomBarPages.length <= maxCount)
+          ? AnimatedNotchBottomBar(
+        /// Provide NotchBottomBarController
+        notchBottomBarController: _controller,
+        color: Colors.black,
+        showLabel: false,
+        shadowElevation: 2,
+        kBottomRadius: 28.0,
+        // notchShader: const SweepGradient(
+        //   startAngle: 0,
+        //   endAngle: pi / 2,
+        //   colors: [Colors.red, Colors.green, Colors.orange],
+        //   tileMode: TileMode.mirror,
+        // ).createShader(Rect.fromCircle(center: Offset.zero, radius: 8.0)),
+        notchColor: Colors.yellow,
+
+        /// restart app if you change removeMargins
+        removeMargins: false,
+        bottomBarWidth: 500,
+        showShadow: true,
+        durationInMilliSeconds: 300,
+        elevation: 1,
+        bottomBarItems: const [
+          BottomBarItem(
+            inActiveItem: Icon(
+              Icons.home,
+              color: Colors.white,
+            ),
+            activeItem: Icon(
+              Icons.home,
+              color: Colors.black,
+            ),
+            itemLabel: 'Home',
+          ),
+          BottomBarItem(
+            inActiveItem: Icon(
+              Icons.newspaper,
+              color: Colors.white,
+            ),
+            activeItem: Icon(
+              Icons.newspaper,
+              color: Colors.black,
+            ),
+            itemLabel: 'Features',
+          ),
+          BottomBarItem(
+            inActiveItem: Icon(
+              Icons.work,
+              color: Colors.white,
+            ),
+            activeItem: Icon(
+              Icons.work,
+              color: Colors.black,
+            ),
+            itemLabel: 'Profile',
+          ),
+        ],
+        onTap: (index) {
+          /// perform action on tab change and to update pages you can update pages without pages
+          log('current selected index $index');
+          _pageController.jumpToPage(index);
+        },
+        kIconSize: 24.0,
+      )
+          : null,
+      body: PageView(
+        controller: _pageController,
+        physics: const NeverScrollableScrollPhysics(),
+        children: List.generate(
+            bottomBarPages.length, (index) => bottomBarPages[index]),
+      ),
     );
   }
 }
-

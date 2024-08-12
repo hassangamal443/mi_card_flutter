@@ -1,4 +1,5 @@
 import 'package:black/screens/home_Screen.dart';
+import 'package:black/screens/scaffold.dart';
 import 'package:black/screens/signUp_Screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -218,7 +219,7 @@ class LoginScreen extends StatelessWidget {
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => HomeScreen()),
+                        MaterialPageRoute(builder: (context) => Scaffold3()),
                       );
                     },
                     child: Container(

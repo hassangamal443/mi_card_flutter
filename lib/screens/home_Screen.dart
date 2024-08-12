@@ -26,7 +26,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return MyScaffold(body: SingleChildScrollView(
+    return Scaffold(
+      body: SingleChildScrollView(
       child: Column(
         children: [
           AnimateGradient(

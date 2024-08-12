@@ -14,7 +14,7 @@ class OurArticlesScreen extends StatefulWidget {
 class _OurArticlesScreenState extends State<OurArticlesScreen> {
   @override
   Widget build(BuildContext context) {
-    return MyScaffold(
+    return Scaffold(
       body: SingleChildScrollView(
         child: Column(
           children: [
